@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mathur Eye Hospital – Share Your Experience</title>
+  <meta name="description" content="Share your experience at Mathur Eye Hospital, Jodhpur. Dr. Vipul Mathur and team provide world-class eye care.">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --indigo: #2B2A8C;
+      --indigo-hover: #3C3AAA;
+      --indigo-light: #EEF0FF;
+      --bg: #F8F9FF;
+      --text: #1A1A2E;
+      --muted: #6B7280;
+      --green: #16A34A;
+      --green-hover: #15803D;
+      --red: #DC2626;
+      --white: #FFFFFF;
+      --border: #D1D5F0;
+      --shadow: 0 4px 32px rgba(43,42,140,0.12);
+      --radius: 16px;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .app {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .progress-bar { height: 6px; background: var(--border); }
+    .progress-fill { height: 100%; background: var(--indigo); transition: width 0.45s cubic-bezier(.4,0,.2,1); width: 0%; }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      padding: 32px 24px 40px;
+      min-height: calc(100vh - 6px);
+      animation: slideIn 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    .screen.active { display: flex; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(28px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ── Welcome ── */
+    .welcome-screen {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 28px;
+      background: linear-gradient(155deg, #2B2A8C 0%, #1A196A 100%);
+      color: white;
+      padding: 48px 32px;
+    }
+    .logo-wrap {
+      width: 130px; height: 130px;
+      background: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      padding: 22px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.28);
+      animation: blink 5s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%,42%,100% { transform: scaleY(1); }
+      47% { transform: scaleY(0.06); }
+      52% { transform: scaleY(1); }
+    }
+    .logo-wrap img { width: 100%; height: auto; }
+    .hospital-name { font-size: 1.9rem; font-weight: 700; color: white; line-height: 1.2; }
+    .hospital-city { font-size: 1rem; color: rgba(255,255,255,0.68); margin-top: 5px; }
+    .tagline { font-size: 1rem; color: rgba(255,255,255,0.82); max-width: 270px; line-height: 1.6; }
+    .btn-white {
+      background: white; color: var(--indigo);
+      border: none; border-radius: var(--radius);
+      font-family: 'Poppins', sans-serif; font-size: 1.15rem; font-weight: 700;
+      padding: 22px 32px; width: 100%; cursor: pointer;
+      transition: transform 0.12s, box-shadow 0.12s;
+      min-height: 72px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.22); }
+    .btn-white:active { transform: scale(0.98); }
+
+    /* ── Shared button styles ── */
+    .btn-primary {
+      background: var(--indigo); color: white;
+      border: none; border-radius: var(--radius);
+      font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 600;
+      padding: 20px 24px; width: 100%; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      min-height: 70px; margin-top: auto;
+    }
+    .btn-primary:hover { background: var(--indigo-hover); }
+    .btn-primary:active { transform: scale(0.99); }
+    .btn-primary:disabled { opacity: 0.38; cursor: not-allowed; }
+    .btn-green {
+      background: var(--green); color: white;
+      border: none; border-radius: var(--radius);
+      font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 600;
+      padding: 20px 24px; width: 100%; cursor: pointer;
+      transition: background 0.2s; min-height: 70px;
+    }
+    .btn-green:hover { background: var(--green-hover); }
+    .btn-google {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: white; color: var(--text);
+      border: 2px solid var(--border); border-radius: var(--radius);
+      font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 600;
+      padding: 18px 24px; width: 100%; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      min-height: 64px; text-decoration: none; margin-top: 12px;
+    }
+    .btn-google:hover { border-color: var(--indigo); background: var(--indigo-light); }
+
+    /* ── Screen headers ── */
+    .screen-header { margin-bottom: 28px; }
+    .step-label {
+      font-size: 0.78rem; font-weight: 600; color: var(--indigo);
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;
+    }
+    .screen-title { font-size: 1.55rem; font-weight: 700; line-height: 1.3; }
+    .screen-subtitle { font-size: 0.95rem; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+
+    /* ── Service grid ── */
+    .service-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; margin-bottom: 24px;
+    }
+    .service-btn {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 9px; background: var(--indigo-light);
+      border: 2px solid transparent; border-radius: var(--radius);
+      padding: 22px 12px; min-height: 108px; cursor: pointer;
+      transition: all 0.2s; font-family: 'Poppins', sans-serif;
+      text-align: center;
+    }
+    .service-btn:hover { border-color: var(--indigo); }
+    .service-btn.selected { background: var(--indigo); border-color: var(--indigo); }
+    .service-btn .s-icon { font-size: 2.1rem; }
+    .service-btn .s-label { font-size: 0.86rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .service-btn.selected .s-label { color: white; }
+
+    /* ── For Whom ── */
+    .whom-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 14px; flex: 1;
+    }
+    .whom-btn {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 12px; background: var(--indigo-light);
+      border: 2px solid transparent; border-radius: var(--radius);
+      padding: 30px 16px; min-height: 130px; cursor: pointer;
+      transition: all 0.2s; font-family: 'Poppins', sans-serif;
+    }
+    .whom-btn:hover { border-color: var(--indigo); }
+    .whom-btn.selected { background: var(--indigo); border-color: var(--indigo); }
+    .whom-btn .w-icon { font-size: 2.6rem; }
+    .whom-btn .w-label { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+    .whom-btn.selected .w-label { color: white; }
+
+    /* ── Stars ── */
+    .section-label { font-size: 1rem; font-weight: 600; margin-bottom: 12px; }
+    .stars-row { display: flex; gap: 10px; justify-content: center; margin: 8px 0 6px; }
+    .star {
+      font-size: 2.8rem; cursor: pointer;
+      filter: grayscale(1) opacity(0.3);
+      transition: filter 0.15s, transform 0.15s;
+      user-select: none; line-height: 1;
+    }
+    .star.filled { filter: grayscale(0) opacity(1); }
+    .star:hover { transform: scale(1.15); }
+    .rating-label {
+      text-align: center; font-size: 1rem; font-weight: 600;
+      color: var(--indigo); min-height: 24px; margin-bottom: 20px;
+    }
+
+    /* ── Likes ── */
+    .likes-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .like-chip {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--indigo-light); border: 2px solid transparent;
+      border-radius: 12px; padding: 17px 18px; cursor: pointer;
+      transition: all 0.18s; font-family: 'Poppins', sans-serif;
+    }
+    .like-chip:hover { border-color: var(--indigo); }
+    .like-chip.selected { background: var(--indigo); border-color: var(--indigo); }
+    .like-chip .lc-icon { font-size: 1.55rem; flex-shrink: 0; }
+    .like-chip .lc-text { font-size: 0.97rem; font-weight: 500; color: var(--text); }
+    .like-chip.selected .lc-text { color: white; }
+
+    /* ── Divider ── */
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+    /* ── Review textarea ── */
+    .review-box {
+      background: var(--indigo-light); border: 2px solid var(--border);
+      border-radius: var(--radius); padding: 20px;
+      font-size: 0.95rem; line-height: 1.75; color: var(--text);
+      width: 100%; font-family: 'Poppins', sans-serif; resize: none;
+      min-height: 220px; margin-bottom: 16px;
+    }
+    .copy-feedback {
+      text-align: center; color: var(--green); font-weight: 600;
+      font-size: 0.88rem; height: 20px; margin-bottom: 12px;
+    }
+
+    /* ── Complaint ── */
+    .complaint-area {
+      width: 100%; border: 2px solid var(--border); border-radius: var(--radius);
+      padding: 20px; font-size: 1rem; font-family: 'Poppins', sans-serif;
+      min-height: 200px; resize: none; background: white; color: var(--text);
+      margin-bottom: 20px; line-height: 1.6;
+    }
+    .complaint-area:focus { outline: none; border-color: var(--indigo); }
+
+    /* ── Thank you card ── */
+    .thank-you-card {
+      background: #F0FDF4; border: 2px solid #86EFAC;
+      border-radius: var(--radius); padding: 36px 24px;
+      text-align: center; display: none;
+    }
+    .thank-you-card.visible { display: block; animation: slideIn 0.35s ease; }
+    .thank-you-card .ty-icon { font-size: 3.2rem; margin-bottom: 14px; }
+    .thank-you-card h3 { font-size: 1.35rem; font-weight: 700; color: #15803D; margin-bottom: 10px; }
+    .thank-you-card p { font-size: 0.95rem; color: #166534; line-height: 1.65; }
+
+    /* ── Error note ── */
+    .required-note { font-size: 0.82rem; color: var(--red); margin-bottom: 10px; }
+
+    /* screen 4b bottom buttons */
+    .review-actions { display: flex; flex-direction: column; gap: 0; margin-top: auto; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- ── Screen 0: Welcome ── -->
+  <div class="screen welcome-screen active" id="screen0">
+    <div class="logo-wrap">
+      <img id="logoImg" alt="Mathur Eye Hospital">
+    </div>
+    <div>
+      <div class="hospital-name">Mathur Eye Hospital</div>
+      <div class="hospital-city">Jodhpur, Rajasthan</div>
+    </div>
+    <div class="tagline">Your experience matters to us. Help us serve you better.</div>
+    <button class="btn-white" onclick="goTo(1)">Share Your Experience &rarr;</button>
+  </div>
+
+  <!-- ── Screen 1: Service ── -->
+  <div class="screen" id="screen1">
+    <div class="screen-header">
+      <div class="step-label">Step 1 of 3</div>
+      <div class="screen-title">Which service did you avail?</div>
+      <div class="screen-subtitle">Tap the service you received</div>
+    </div>
+    <div class="service-grid">
+      <button class="service-btn" onclick="selectService(this,'Refraction & Glasses')">
+        <span class="s-icon">🕶️</span><span class="s-label">Refraction & Glasses</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'Retina / Fundus Examination')">
+        <span class="s-icon">🔍</span><span class="s-label">Retina / Fundus Examination</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'Cataract & Lens Implantation')">
+        <span class="s-icon">🔮</span><span class="s-label">Cataract & Lens Implantation</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'Pterygium with Grafting')">
+        <span class="s-icon">🧬</span><span class="s-label">Pterygium with Grafting</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'Cataract Surgery')">
+        <span class="s-icon">👁️</span><span class="s-label">Cataract Surgery</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'Glaucoma Surgery')">
+        <span class="s-icon">🔬</span><span class="s-label">Glaucoma Surgery</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'Vitreo-Retina Care')">
+        <span class="s-icon">🫀</span><span class="s-label">Vitreo-Retina Care</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'Oculoplasty')">
+        <span class="s-icon">✨</span><span class="s-label">Oculoplasty</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'OCT Scan')">
+        <span class="s-icon">📷</span><span class="s-label">OCT Scan</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'IOL Master')">
+        <span class="s-icon">📐</span><span class="s-label">IOL Master</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'Fundus Photo')">
+        <span class="s-icon">📸</span><span class="s-label">Fundus Photo</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'YAG Laser')">
+        <span class="s-icon">⚡</span><span class="s-label">YAG Laser</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'YAG PI')">
+        <span class="s-icon">🎯</span><span class="s-label">YAG PI</span>
+      </button>
+      <button class="service-btn" onclick="selectService(this,'Optical Services')">
+        <span class="s-icon">👓</span><span class="s-label">Optical Services</span>
+      </button>
+    </div>
+    <button class="btn-primary" id="btn1" disabled onclick="goTo(2)">Continue &rarr;</button>
+  </div>
+
+  <!-- ── Screen 2: For Whom ── -->
+  <div class="screen" id="screen2">
+    <div class="screen-header">
+      <div class="step-label">Step 2 of 3</div>
+      <div class="screen-title">Who received the treatment?</div>
+    </div>
+    <div class="whom-grid">
+      <button class="whom-btn" onclick="selectWhom(this,'myself')">
+        <span class="w-icon">🧑</span><span class="w-label">Myself</span>
+      </button>
+      <button class="whom-btn" onclick="selectWhom(this,'my parent')">
+        <span class="w-icon">👴</span><span class="w-label">My Parent</span>
+      </button>
+      <button class="whom-btn" onclick="selectWhom(this,'my child')">
+        <span class="w-icon">👶</span><span class="w-label">My Child</span>
+      </button>
+      <button class="whom-btn" onclick="selectWhom(this,'my spouse')">
+        <span class="w-icon">💑</span><span class="w-label">My Spouse</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Screen 3: Rating + Likes ── -->
+  <div class="screen" id="screen3" style="overflow-y:auto">
+    <div class="screen-header">
+      <div class="step-label">Step 3 of 3</div>
+      <div class="screen-title">How was your experience?</div>
+    </div>
+    <div class="section-label">Rate your visit <span style="color:var(--red)">*</span></div>
+    <div class="stars-row">
+      <span class="star" onclick="setRating(1)">⭐</span>
+      <span class="star" onclick="setRating(2)">⭐</span>
+      <span class="star" onclick="setRating(3)">⭐</span>
+      <span class="star" onclick="setRating(4)">⭐</span>
+      <span class="star" onclick="setRating(5)">⭐</span>
+    </div>
+    <div class="rating-label" id="ratingLabel">Tap a star to rate</div>
+    <hr class="divider">
+    <div class="section-label">What did you like? <span style="color:var(--muted);font-weight:400;font-size:0.83rem">(optional)</span></div>
+    <div class="likes-grid">
+      <div class="like-chip" onclick="toggleLike(this,'doctors_expertise')">
+        <span class="lc-icon">🩺</span><span class="lc-text">Doctor's expertise & skill</span>
+      </div>
+      <div class="like-chip" onclick="toggleLike(this,'caring_staff')">
+        <span class="lc-icon">🤝</span><span class="lc-text">Friendly & caring staff</span>
+      </div>
+      <div class="like-chip" onclick="toggleLike(this,'cleanliness')">
+        <span class="lc-icon">✨</span><span class="lc-text">Clean & hygienic facility</span>
+      </div>
+      <div class="like-chip" onclick="toggleLike(this,'wait_time')">
+        <span class="lc-icon">⏱️</span><span class="lc-text">Short waiting time</span>
+      </div>
+      <div class="like-chip" onclick="toggleLike(this,'affordable')">
+        <span class="lc-icon">💰</span><span class="lc-text">Affordable treatment</span>
+      </div>
+      <div class="like-chip" onclick="toggleLike(this,'equipment')">
+        <span class="lc-icon">🔭</span><span class="lc-text">Modern equipment</span>
+      </div>
+      <div class="like-chip" onclick="toggleLike(this,'outcome')">
+        <span class="lc-icon">🌟</span><span class="lc-text">Excellent outcome</span>
+      </div>
+      <div class="like-chip" onclick="toggleLike(this,'explanation')">
+        <span class="lc-icon">💬</span><span class="lc-text">Clear explanation</span>
+      </div>
+    </div>
+    <div class="required-note" id="ratingError" style="display:none">⚠️ Please rate your experience to continue</div>
+    <button class="btn-primary" style="margin-top:8px" onclick="handleRoute()">Submit &rarr;</button>
+  </div>
+
+  <!-- ── Screen 4A: Bad Experience ── -->
+  <div class="screen" id="screen4a">
+    <div class="screen-header">
+      <div class="screen-title">We're sorry to hear that 🙏</div>
+      <div class="screen-subtitle">Your feedback helps us improve. Please tell us what went wrong.</div>
+    </div>
+    <textarea class="complaint-area" id="complaintText" placeholder="Please describe your experience in detail..."></textarea>
+    <button class="btn-primary" id="submitBtn" onclick="submitComplaint()">Submit Feedback</button>
+    <div class="thank-you-card" id="thankYouCard">
+      <div class="ty-icon">🙏</div>
+      <h3>Thank You for Your Feedback</h3>
+      <p>We take every concern seriously and will work to make sure this doesn't happen again. We appreciate you taking the time to let us know.</p>
+    </div>
+  </div>
+
+  <!-- ── Screen 4B: Good Experience ── -->
+  <div class="screen" id="screen4b" style="overflow-y:auto">
+    <div class="screen-header">
+      <div class="screen-title">Thank you! 🌟</div>
+      <div class="screen-subtitle">Here's a ready-made review. Feel free to edit it, then post on Google!</div>
+    </div>
+    <textarea class="review-box" id="reviewText" rows="11"></textarea>
+    <div class="copy-feedback" id="copyFb"></div>
+    <div class="review-actions">
+      <button class="btn-green" onclick="copyReview()">📋 &nbsp;Copy Review</button>
+      <a class="btn-google" id="gmapsLink" href="#" target="_blank" rel="noopener">
+        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Post on Google Maps
+      </a>
+    </div>
+  </div>
+
+</div><!-- .app -->
+
+<script>
+/* ── State ── */
+let svc = '', whom = '', rating = 0;
+let likes = new Set();
+
+/* ── Logo embed ── */
+const LOGO_B64 = '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';
+document.getElementById('logoImg').src = 'data:image/png;base64,' + LOGO_B64;
+
+/* ── Navigation ── */
+const pct = { 0:0, 1:25, 2:50, 3:75, '4a':100, '4b':100 };
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen' + id).classList.add('active');
+  document.getElementById('progressFill').style.width = (pct[id] || 0) + '%';
+  window.scrollTo(0,0);
+}
+
+/* ── Service ── */
+function selectService(el, name) {
+  document.querySelectorAll('.service-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  svc = name;
+  document.getElementById('btn1').disabled = false;
+}
+
+/* ── For Whom ── */
+function selectWhom(el, name) {
+  document.querySelectorAll('.whom-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  whom = name;
+  setTimeout(() => goTo(3), 280);
+}
+
+/* ── Rating ── */
+const ratingText = ['','Poor 😞','Below Average 😐','Average 🙂','Good 😊','Excellent! 🌟'];
+function setRating(val) {
+  rating = val;
+  document.querySelectorAll('.star').forEach((s,i) => {
+    s.classList.toggle('filled', i < val);
+  });
+  document.getElementById('ratingLabel').textContent = ratingText[val];
+  document.getElementById('ratingError').style.display = 'none';
+}
+
+/* ── Likes ── */
+function toggleLike(el, key) {
+  el.classList.toggle('selected');
+  if (el.classList.contains('selected')) likes.add(key);
+  else likes.delete(key);
+}
+
+/* ── Route after rating ── */
+function handleRoute() {
+  if (!rating) {
+    document.getElementById('ratingError').style.display = 'block';
+    return;
+  }
+  if (rating <= 3) { goTo('4a'); }
+  else { buildReview(); goTo('4b'); }
+}
+
+/* ── SEO data ── */
+const svcKw = {
+  'Cataract Surgery':    'cataract surgery in Jodhpur',
+  'Glaucoma Surgery':    'glaucoma treatment in Jodhpur',
+  'Vitreo-Retina Care':  'retina specialist in Jodhpur',
+  'Oculoplasty':         'oculoplasty surgery in Jodhpur',
+  'OCT Scan':            'OCT eye scan in Jodhpur',
+  'IOL Master':          'IOL power calculation in Jodhpur',
+  'Fundus Photo':        'fundus photography in Jodhpur',
+  'YAG Laser':           'YAG laser eye treatment in Jodhpur',
+  'YAG PI':              'YAG PI laser in Jodhpur',
+  'Optical Services':           'optical services in Jodhpur',
+  'Refraction & Glasses':       'eye refraction and glasses in Jodhpur',
+  'Retina / Fundus Examination':'retina examination in Jodhpur',
+  'Cataract & Lens Implantation':'cataract and lens implantation in Jodhpur',
+  'Pterygium with Grafting':    'pterygium surgery in Jodhpur'
+};
+
+// Openers per relationship - varied, plain, human
+const wIntro = {
+  'myself': [
+    (s) => `I got my ${s} done at Mathur Eye Hospital in Jodhpur.`,
+    (s) => `Had ${s} done at Mathur Eye Hospital, Jodhpur.`,
+    (s) => `Came to Mathur Eye Hospital in Jodhpur for ${s}.`
+  ],
+  'my parent': [
+    (s) => `Got my parent's ${s} done at Mathur Eye Hospital, Jodhpur.`,
+    (s) => `Brought my parent here for ${s}. Mathur Eye Hospital, Jodhpur.`,
+    (s) => `My parent had ${s} at Mathur Eye Hospital in Jodhpur.`
+  ],
+  'my child': [
+    (s) => `Took my child to Mathur Eye Hospital, Jodhpur for ${s}.`,
+    (s) => `My child had ${s} done here at Mathur Eye Hospital in Jodhpur.`,
+    (s) => `Got ${s} done for my child at Mathur Eye Hospital, Jodhpur.`
+  ],
+  'my spouse': [
+    (s) => `My spouse had ${s} done at Mathur Eye Hospital in Jodhpur.`,
+    (s) => `Came to Mathur Eye Hospital, Jodhpur for my spouse's ${s}.`,
+    (s) => `Got my spouse's ${s} done here at Mathur Eye Hospital, Jodhpur.`
+  ]
+};
+
+// Short punchy sentences mixed with longer ones. No em dashes. No filler.
+const likeSentences = {
+  doctors_expertise: "Dr. Vipul Mathur really knows his work. He was calm and precise throughout. Felt completely safe the whole time.",
+  caring_staff:      "The staff were very kind and patient with us. Nobody made us feel like we were bothering them, even when we had many questions.",
+  cleanliness:       "The hospital is clean and well kept. Felt comfortable and hygienic throughout our visit.",
+  wait_time:         "Did not have to wait long at all. The whole process was smooth and well organised.",
+  affordable:        "The cost was very reasonable. Good quality care without spending too much.",
+  equipment:         "They have proper modern equipment there. Everything looked well maintained.",
+  outcome:           "The results are really good. Very satisfied with how it all turned out.",
+  explanation:       "Dr. Mathur sat with us and explained everything before starting. No confusion at all. That helped a lot."
+};
+
+function buildReview() {
+  const kw = svcKw[svc] || svc;
+  const stars = '\u2B50'.repeat(rating);
+
+  // Pick random opener
+  const openers = wIntro[whom] || wIntro['myself'];
+  const opener = openers[Math.floor(Math.random() * openers.length)](svc);
+
+  // Liked item lines
+  const likeLines = [...likes].map(k => likeSentences[k]).filter(Boolean);
+  const likePara = likeLines.length ? '\n\n' + likeLines.join(' ') : '';
+
+  const review = opener + ' Really happy with how everything went.' + likePara
+    + '\n\nIf you are looking for ' + kw + ' in Jodhpur, go to Mathur Eye Hospital.'
+    + ' Dr. Vipul Mathur is one of the best eye doctors in Jodhpur.'
+    + ' Good doctor, good team. Best eye hospital in Jodhpur for us.'
+    + ' Would recommend without hesitation. ' + stars;
+
+  document.getElementById('reviewText').value = review;
+  document.getElementById('gmapsLink').href = 'https://g.page/r/CVWbNWmB1bxREAE/review';
+}
+
+/* ── Copy ── */
+function copyReview() {
+  const text = document.getElementById('reviewText').value;
+  navigator.clipboard.writeText(text).then(() => {
+    const fb = document.getElementById('copyFb');
+    fb.textContent = '✅ Copied! Now paste it on Google Maps.';
+    setTimeout(() => fb.textContent = '', 3500);
+  });
+}
+
+/* ── Complaint sink ── */
+function submitComplaint() {
+  document.getElementById('submitBtn').style.display = 'none';
+  document.getElementById('complaintText').style.display = 'none';
+  document.getElementById('thankYouCard').classList.add('visible');
+}
+</script>
+</body>
+</html>
